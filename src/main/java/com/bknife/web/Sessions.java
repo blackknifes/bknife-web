@@ -10,9 +10,9 @@ public class Sessions {
     private static final long serverTime = System.nanoTime();
     private static ThreadLocal<Session> session = new ThreadLocal<Session>();
     private static SecureRandom random = new SecureRandom(ByteBuffer.wrap(new byte[8]).putLong(serverTime).array());
-    private static AtomicLong sequence = new AtomicLong(random.nextLong());
-    private static final long startTime = random.nextLong();
-    private static final long startThreadId = random.nextLong();
+    private static AtomicLong sequence = new AtomicLong(6907459285185339852l);
+    private static final long startTime = 5491269912662506523l;
+    private static final long startThreadId = 7723931585152220319l;
 
     public static String newSessionId() {
         String timeStr = Strings.padStart(Long.toHexString(System.nanoTime() - serverTime + startTime), 16, '0');
@@ -24,12 +24,5 @@ public class Sessions {
 
     public static Session getSession() {
         return session.get();
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        for (;;) {
-            System.out.println(Sessions.newSessionId());
-            Thread.sleep(1);
-        }
     }
 }

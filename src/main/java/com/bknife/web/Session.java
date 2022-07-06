@@ -9,7 +9,7 @@ public interface Session {
      * 
      * @return
      */
-    public String getSessionId();
+    public String getId();
 
     /**
      * 获取所有属性名称
@@ -26,6 +26,13 @@ public interface Session {
      * @return
      */
     public <T> T getSessionUser(Class<T> clazz);
+
+    /**
+     * 是否已登录
+     * 
+     * @return
+     */
+    public boolean isLogined();
 
     /**
      * 设置绑定的对象
@@ -142,4 +149,11 @@ public interface Session {
      * @return
      */
     public String getAttributeString(Object key, String defaultValue);
+
+    /**
+     * 获取过期时间
+     * 
+     * @return
+     */
+    public long getExpiredTime();
 }

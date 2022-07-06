@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.bknife.base.converter.ConverterUtils;
 import com.bknife.web.Session;
 import com.bknife.web.Sessions;
@@ -13,8 +14,11 @@ public class HttpSession implements Session {
     private Map<Object, Object> attributes = new HashMap<Object, Object>();
     private Object object;
 
+    @JSONField(serialize = false)
+    private long expireTime;
+
     @Override
-    public String getSessionId() {
+    public String getId() {
         return sessionId;
     }
 
@@ -31,11 +35,15 @@ public class HttpSession implements Session {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getSessionUser(Class<T> clazz) {
-        if (object == null)
+        if (object == null || !clazz.isAssignableFrom(object.getClass()))
             return null;
-        if (clazz.isAssignableFrom(object.getClass()))
-            return (T) object;
-        return null;
+        return (T) object;
+    }
+
+    @Override
+    public boolean isLogined()
+    {
+        return object != null;
     }
 
     @Override
@@ -105,5 +113,14 @@ public class HttpSession implements Session {
     @Override
     public String getAttributeString(Object key, String defaultValue) {
         return getAttribute(key, String.class, "");
+    }
+
+    @Override
+    public long getExpiredTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(long expireTime) {
+        this.expireTime = expireTime;
     }
 }
